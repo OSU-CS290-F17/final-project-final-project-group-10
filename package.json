@@ -1,0 +1,25 @@
+{
+  "name": "final-project-final-project-group-10",
+  "version": "0.0.1",
+  "description": "Collaborative drawing web app.",
+  "main": "server.js",
+  "scripts": {
+    "build": "echo Build script running!",
+    "prestart": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OSU-CS290-F17/final-project-final-project-group-10.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/OSU-CS290-F17/final-project-final-project-group-10.git"
+  },
+  "homepage": "https://github.com/OSU-CS290-F17/final-project-final-project-group-10#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "express-handlebars": "^3.0.0",
+    "handlebars": "^4.0.11"
+  }
+}
