@@ -74,7 +74,7 @@ body,html{
 		overflow-x: scroll;
 		overflow-y: hidden;
 		text-align: center;
-		background-color: #FFEFFF;
+		background-color: #FFFFFF;
 		white-space: nowrap;
 		height: 200px;
 		width: 100%;
@@ -110,15 +110,6 @@ body,html{
 }
 }
 
-
- 
-
-#post-img-container {
-	
-}
-
-
-
 #drawing-app-container {
 	
 	
@@ -138,7 +129,7 @@ body,html{
 
 #app-controls-container {
 	
-	position: relative;
+	position:;
 	background: #4E598C;
 	float: right;
 	width: 20%;
