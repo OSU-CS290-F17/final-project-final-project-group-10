@@ -30,7 +30,7 @@ body,html{
 #drawing-app-container {
 	
 	background-color: lightgray;
-	height: 570px;
+	height: 520px;
 	margin: 20px;
 	margin-top: 50px;
 }
@@ -54,7 +54,7 @@ select {
 
 .toolbar {
 	font-family: Roboto;
-	margin-top: 65px;
+	margin-top: 15px;
 	margin-left: 10px ;
 	color: white;
 }
