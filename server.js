@@ -21,7 +21,7 @@ console.log("Done!");
 app.use(express.static('public'));
 
 app.get('/', function (req, res, next) {
-
+  res.status('200').render("index");
 });
 
 app.get('*', function (req, res) {
