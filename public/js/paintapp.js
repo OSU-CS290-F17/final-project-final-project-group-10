@@ -1,5 +1,5 @@
 //********************************************************
-// Helper function that builds up elements in the DOM for 
+// Helper function that builds up elements in the DOM for
 // the paint app. Allows for quick construction of DOM elements
 // without manually creating each element.
 //********************************************************
@@ -20,7 +20,7 @@ function elt(name, attributes) {
 }
 
 //**********************************************************
-// Creates the main canvas DOM element. Calls the helper 
+// Creates the main canvas DOM element. Calls the helper
 // function to create the canvas with selected parameters
 //**********************************************************
 var controls = Object.create(null);
@@ -37,7 +37,7 @@ function createPaint(parent) {
 
 
 //***********************************************************
-// Creates the dropdown that allows the user to pick a tool 
+// Creates the dropdown that allows the user to pick a tool
 // for drawing on the canvas. Uses the helper to create DOM
 // elements.
 //***********************************************************
@@ -58,7 +58,7 @@ controls.tool = function(cx) {
 };
 
 //**************************************************************
-// Helper function to draw lines. Returns the current location of the 
+// Helper function to draw lines. Returns the current location of the
 // mouse by calculating the relationship between the mouse location
 // and the user's screen
 //**************************************************************
@@ -94,12 +94,12 @@ tools.Line = function(event, cx, onEnd) {
 		cx.moveTo(pos.x, pos.y);
 		pos = relativePos(event, cx.canvas);
 		cx.lineTo(pos.x, pos.y);
-		cx.stroke();	
+		cx.stroke();
 	}, onEnd);
 };
 
 //***************************************************************
-// Tool that utilizes the line tool, however instead of creating 
+// Tool that utilizes the line tool, however instead of creating
 // pixels on the canvas, it makes those that the user mouses over
 // transparent.
 //***************************************************************
@@ -132,11 +132,27 @@ controls.brushSize = function(cx) {
 };
 
 //*****************************************************************
+// Function that would load drawings from a data URL.
+//*****************************************************************
+function loadImageURL(cx, url) {
+  var image = document.createElement("img");
+  image.addEventListener("load", function() {
+    var color = cx.fillStyle, size = cx.lineWidth;
+    cx.canvas.width = image.width;
+    cx.canvas.height = image.height;
+    cx.drawImage(image, 0, 0);
+    cx.fillStyle = color;
+    cx.strokeStyle = color;
+    cx.lineWidth = size;
+  });
+  image.src = url;
+}
+
+//*****************************************************************
 // Function that would save drawings locally. Needs to be modified
-// or replaced to store images on server side to be displayed in 
+// or replaced to store images on server side to be displayed in
 // the scrolling sidebar.
 //*****************************************************************
-/*
 controls.save = function(cx) {
 	var link = elt("a", {href: "/"}, "Save");
 	function update() {
@@ -154,7 +170,6 @@ controls.save = function(cx) {
 	link.addEventListener("focus", update);
 	return link;
 };
-*/
 
 //********************************************************************
 // Tool that allows text to be displayed on the canvas at current mouse
@@ -170,7 +185,7 @@ tools.Text = function(event, cx) {
 };
 
 //**************************************************************
-// Creates drawing canvas in app-content-container by calling 
+// Creates drawing canvas in app-content-container by calling
 // 'createPaint'
 //**************************************************************
 var drawSpace = document.getElementById('app-content-container');
