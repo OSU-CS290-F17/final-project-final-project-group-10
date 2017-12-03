@@ -26,8 +26,6 @@ var mongoURL = 'mongodb://' + mongoUser + ':' + mongoPassword +
 
 var mongoConnection = null;
 
-
-  
 // Set handlebars as rendering engine
 console.log("Set rendering engine...");
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
