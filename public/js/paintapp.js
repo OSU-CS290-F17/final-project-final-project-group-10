@@ -1,3 +1,7 @@
+
+var dataURL = "";
+var id = "";
+
 //********************************************************
 // Helper function that builds up elements in the DOM for
 // the paint app. Allows for quick construction of DOM elements
@@ -154,10 +158,10 @@ function loadImageURL(cx, url) {
 // the scrolling sidebar.
 //*****************************************************************
 controls.save = function(cx) {
-	var link = elt("a", {href: "/"}, "Save");
+	var link = elt("a", {onclick: "addImage()"}, "Save");
 	function update() {
 		try {
-			link.href = cx.canvas.toDataURL();
+			dataURL = cx.canvas.toDataURL();
 		} catch (e) {
 			if (e instanceof SecurityError)
 				link.href = "javascript:alert(" +
@@ -190,3 +194,32 @@ tools.Text = function(event, cx) {
 //**************************************************************
 var drawSpace = document.getElementById('app-content-container');
 createPaint(drawSpace);
+
+//
+//
+//
+//
+function addImage(){
+	var postRequest = new XMLHttpRequest();
+    var postURL = "/addImage/";
+    postRequest.open('POST', postURL);
+
+    var photoObj = {
+      photoURL: dataURL,
+	  id: id
+    };
+    var requestBody = JSON.stringify(photoObj);
+    postRequest.setRequestHeader('Content-Type', 'application/json');
+
+    postRequest.addEventListener('load', function (event) {
+      if (event.target.status !== 200) {
+        alert("Error storing photo in database:\n\n\n" + event.target.response);
+      } else {
+		  if (id == "") {
+			  console.log("TODO: Create Image");
+		  }
+      }
+    });
+
+    postRequest.send(requestBody);
+}
