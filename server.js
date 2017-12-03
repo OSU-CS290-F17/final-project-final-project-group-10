@@ -41,6 +41,40 @@ app.get('/', function (req, res, next) {
   res.status('200').render("index");
 });
 
+app.post('/addImage/', funtion (req, res, next) {
+	var images = mongoConnection.collection('images');
+
+	var photoObj = {
+      photoURL: req.body.photoURL,
+      id: req.body.id
+    };
+	
+	images.find({ _id: req.body.id }).toArray(function (err, results) {
+    if (err) {
+      res.status(500).send("Error fetching image from DB");
+    } else if (results.length > 0) {
+        images.updateOne(
+      { _id: req.body.id },
+      { $push: { images: photoObj } },
+      function (err, result) {
+        if (err) {
+          res.status(500).send("Error fetching image from DB");
+        } else {
+          res.status(200).send("update");
+        }
+      }
+    } else {
+      images.insertOne(photoObj, funtion(err, res){
+		  if (err) {
+          res.status(500).send("Error fetching image from DB");
+        } else {
+          res.status(200).send("add");
+        }
+	  });
+    }
+  });
+});
+
 app.get('*', function (req, res) {
   res.status(404).render("404");
 });
