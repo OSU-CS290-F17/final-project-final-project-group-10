@@ -210,16 +210,16 @@ function addImage(){
     };
     var requestBody = JSON.stringify(photoObj);
     postRequest.setRequestHeader('Content-Type', 'application/json');
-
+	
     postRequest.addEventListener('load', function (event) {
       if (event.target.status !== 200) {
         alert("Error storing photo in database:\n\n\n" + event.target.response);
       } else {
 		  if (id == "") {
-			  console.log("TODO: Create Image");
+			  event.target.post.Request
 		  }
       }
     });
-
-    postRequest.send(requestBody);
+	postRequest.send(requestBody);
+  
 }

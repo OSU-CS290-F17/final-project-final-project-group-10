@@ -60,7 +60,7 @@ app.post('/addImage/', funtion (req, res, next) {
         if (err) {
           res.status(500).send("Error fetching image from DB");
         } else {
-          res.status(200).send("update");
+          res.status(200).render("image-container");
         }
       }
     } else {
@@ -68,7 +68,7 @@ app.post('/addImage/', funtion (req, res, next) {
 		  if (err) {
           res.status(500).send("Error fetching image from DB");
         } else {
-          res.status(200).send("add");
+          res.status(200).render("image-container");
         }
 	  });
     }
