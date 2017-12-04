@@ -299,6 +299,8 @@ var deleteMe = function() {
 					postRequest.send(requestBody);
 			}
 		}
+		id = "";
+		loadImageURL(cx, emptyImg);
 	}
 };
 
