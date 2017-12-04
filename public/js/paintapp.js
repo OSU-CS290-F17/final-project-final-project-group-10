@@ -240,7 +240,7 @@ function addImage(){
 					// Add event listeners
 					response.addEventListener("mouseenter", drawEdit);
 					response.addEventListener("mouseleave", drawEdit);
-					response.addEventListener("click", deleteMe);
+					response.addEventListener("click", loadMe);
 					console.log(response);
 					if (id == "") {
 						// If this is a new image, add it to the images list.
@@ -299,6 +299,7 @@ var deleteMe = function() {
 					postRequest.send(requestBody);
 			}
 		}
+		id = "";
 		loadImageURL(cx, emptyImg);
 	}
 };
