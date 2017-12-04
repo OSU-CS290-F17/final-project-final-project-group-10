@@ -32,6 +32,7 @@ var mongoDBName = process.env.MONGO_DB;
 var mongoURL = 'mongodb://' + mongoUser + ':' + mongoPassword +
   '@' + mongoHost + ':' + mongoPort + '/' + mongoDBName;
 var mongoConnection = null;
+var images;
 
 // Set handlebars as rendering engine
 console.log("Set rendering engine...");
@@ -47,12 +48,30 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 app.get('/', function(req, res, next) {
-  res.status('200').render("index");
+  // Get list of all photos in database
+  images.find({}).toArray(function(err, results) {
+    if (err) {
+      next();
+    } else {
+      console.log("Rendering index.");
+      res.status('200').render("index", {images: results});
+    }
+  });
+});
+
+app.post('/deleteImage/', function(req, res, next) {
+  console.log("Deleting image " + req.body.id +".");
+  var photoObj = {
+    photoURL: req.body.photoURL,
+    _id: req.body.id
+  };
+  images.deleteOne({"_id" : ObjectId(photoObj._id)}, function(err, result) {
+    if (result.result.n == 0) console.log("Nothing deleted.");
+  });
+  res.status(200).send("Done!");
 });
 
 app.post('/addImage/', function(req, res, next) {
-  var images = mongoConnection.collection('images');
-
   var photoObj = {
     photoURL: req.body.photoURL,
     id: req.body.id
@@ -77,7 +96,7 @@ app.post('/addImage/', function(req, res, next) {
             res.status(500).send("error");
           } else {
             console.log("Updated image. Sending image-container.");
-            res.status(200).render("image-container-response", {"img-url": photoObj.photoURL, "data-id": photoObj.id});
+            res.status(200).render("image-container-response", {"photoURL": photoObj.photoURL, "data-id": photoObj.id});
           }
         });
       } else {
@@ -91,13 +110,14 @@ app.post('/addImage/', function(req, res, next) {
         res.status(500).send("error");
       } else {
         console.log("Created image. Sending image-container.");
-        res.status(200).render("image-container-response", {"img-url": photoObj.photoURL, "data-id": results["ops"][0]["_id"]});
+        res.status(200).render("image-container-response", {"photoURL": photoObj.photoURL, "data-id": results["ops"][0]["_id"]});
       }
     });
   }
 });
 
 app.get('*', function(req, res) {
+  console.log("Rendering index.");
   res.status(404).render("404");
 });
 
@@ -108,6 +128,7 @@ MongoClient.connect(mongoURL, function(err, connection) {
     throw err;
   }
   mongoConnection = connection;
+  images = mongoConnection.collection('images');
   app.listen(port, function() {
     d = new Date();
     t = d.getTime() - t;

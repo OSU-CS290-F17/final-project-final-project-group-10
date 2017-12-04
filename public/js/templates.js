@@ -19,6 +19,6 @@ templates['index'] = template({"compiler":[7,">= 4.0.0"],"main":function(contain
     + ((stack1 = container.invokePartial(partials.drawingApp,depth0,{"name":"drawingApp","data":data,"indent":"\t\t","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
     + "	</div>\n\n"
     + ((stack1 = container.invokePartial(partials.sidebar,depth0,{"name":"sidebar","data":data,"indent":"\t","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
-    + "\n</div>\n<!-- Include JS for the paint app. -->\n<script src=\"js/paintapp.js\"></script>\n";
+    + "\n</div>\n<!-- Include JS for the paint app. -->\n<script src=\"js/paintapp.js\" defer></script>\n";
 },"usePartial":true,"useData":true});
 })();
