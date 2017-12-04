@@ -153,9 +153,7 @@ function loadImageURL(cx, url) {
 }
 
 //*****************************************************************
-// Function that would save drawings locally. Needs to be modified
-// or replaced to store images on server side to be displayed in
-// the scrolling sidebar.
+// Function that saves/updates drawings in DB.
 //*****************************************************************
 controls.save = function(cx) {
 	var link = elt("a", {onclick: "addImage()"}, "Save");
@@ -195,31 +193,66 @@ tools.Text = function(event, cx) {
 var drawSpace = document.getElementById('app-content-container');
 createPaint(drawSpace);
 
-//
-//
-//
-//
+//**************************************************************
+// Submits a POST request to NodeJS server with a stringified
+// JSON object representing a photo. dataURL is a URL that's
+// parsed by the browser to construct an image.
+//**************************************************************
 function addImage(){
+	// Initiate new POST request
 	var postRequest = new XMLHttpRequest();
     var postURL = "/addImage/";
     postRequest.open('POST', postURL);
 
+		// Create photo object
     var photoObj = {
       photoURL: dataURL,
-	  id: id
+	  	id: id
     };
+
+		// Store object in body of request.
     var requestBody = JSON.stringify(photoObj);
+		console.log(requestBody);
+
     postRequest.setRequestHeader('Content-Type', 'application/json');
-	
-    postRequest.addEventListener('load', function (event) {
-      if (event.target.status !== 200) {
-        alert("Error storing photo in database:\n\n\n" + event.target.response);
-      } else {
-		  if (id == "") {
-			  event.target.post.Request
+		postRequest.onreadystatechange = function () {
+			// If the request completes successfully and a response is received
+		  if(postRequest.readyState === XMLHttpRequest.DONE && postRequest.status === 200) {
+				if (event.target.status !== 200) {
+					alert("Error storing photo in database:\n\n\n" + postRequest.response);
+				} else {
+					// Get image container.
+					var imageContainer = document.getElementById('image-wrapper');
+					var images = imageContainer.getElementsByTagName("img");
+					console.log(images);
+
+					// Get HTML DOM node from response
+					var response = document.createElement('html');
+					response.innerHTML = postRequest.response;
+					response = response.getElementsByTagName("img")[0];
+
+					if (id == "") {
+						// If this is a new image, add it to the images list.
+						imageContainer.appendChild(response);
+
+						// Set global id variable
+						id = response.getAttribute("data-id");
+					} else {
+						// Search for image to update
+						for (var i = 0; i < images.length; i++) {
+							// If found...
+							if (images[i].getAttribute("data-id") == id) {
+								// ... replace the HTML with the newly-rendered element.
+								images[i].replaceWith(response);
+							} else {
+								// This shouldn't be reached. Log an error.
+								alert("Error! Image should exist but wasn't found!");
+							}
+						}
+					}
+				}
 		  }
-      }
-    });
+		};
 	postRequest.send(requestBody);
-  
+
 }
