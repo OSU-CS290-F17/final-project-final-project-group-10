@@ -84,36 +84,23 @@ app.post('/addImage/', function(req, res, next) {
         res.status(500).send("error");
       } else if (results.length > 0) {
         console.log("Found at least 1 image.")
-        images.updateOne({
-          _id: ObjectId(photoObj.id)
-        }, {
-          $push: {
-            images: photoObj
-          }
-        }, function(err, results) {
-          if (err) {
-            console.log("Error fetching image from DB.");
-            res.status(500).send("error");
-          } else {
-            console.log("Updated image. Sending image-container.");
-            res.status(200).render("image-container-response", {"photoURL": photoObj.photoURL, "data-id": photoObj.id});
-          }
+        images.deleteOne({"_id" : ObjectId(photoObj.id)}, function(err, result) {
+          if (result.result.n == 0) console.log("Nothing deleted.");
         });
       } else {
         console.log("Error! Object should exist but was not found.")
       }
     });
-  } else {
-    images.insertOne(photoObj, function(err, results) {
-      if (err) {
-        console.log("Error fetching image from DB.");
-        res.status(500).send("error");
-      } else {
-        console.log("Created image. Sending image-container.");
-        res.status(200).render("image-container-response", {"photoURL": photoObj.photoURL, "data-id": results["ops"][0]["_id"]});
-      }
-    });
   }
+  images.insertOne(photoObj, function(err, results) {
+    if (err) {
+      console.log("Error fetching image from DB.");
+      res.status(500).send("error");
+    } else {
+      console.log("Created image. Sending image-container.");
+      res.status(200).render("image-container-response", {"photoURL": photoObj.photoURL, "data-id": results["ops"][0]["_id"]});
+    }
+  });
 });
 
 app.get('*', function(req, res) {
