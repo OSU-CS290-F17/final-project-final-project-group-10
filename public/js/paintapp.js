@@ -206,7 +206,7 @@ createPaint(drawSpace);
 // JSON object representing a photo. dataURL is a URL that's
 // parsed by the browser to construct an image.
 //**************************************************************
-function addImage(){
+var addImage = function addImage(){
 	// Initiate new POST request
 	var postRequest = new XMLHttpRequest();
     var postURL = "/addImage/";
@@ -225,7 +225,7 @@ function addImage(){
 		postRequest.onreadystatechange = function () {
 			// If the request completes successfully and a response is received
 		  if(postRequest.readyState === XMLHttpRequest.DONE && postRequest.status === 200) {
-				if (event.target.status !== 200) {
+				if (postRequest.status !== 200) {
 					alert("Error storing photo in database:\n\n\n" + postRequest.response);
 				} else {
 					// Get image container.
