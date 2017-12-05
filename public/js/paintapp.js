@@ -312,10 +312,13 @@ var loadMe = function(event) {
 };
 
 // Add Event Listeners for deleting/changing images
-var photos = document.getElementById('image-wrapper').getElementsByTagName("img");
+var photos = document.getElementsByTagName("img");
 for (var i = 0; i < photos.length; i++) {
 	photos[i].addEventListener("mouseenter", drawEdit);
 	photos[i].addEventListener("mouseleave", drawEdit);
+}
+photos = document.getElementById('image-wrapper').getElementsByTagName("img");
+for (var i = 0; i < photos.length; i++) {
 	photos[i].addEventListener("click", loadMe);
 }
 // Add Event Listener for new images
